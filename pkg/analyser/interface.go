@@ -7,6 +7,7 @@ import (
 	"github.com/deb-sig/double-entry-generator/pkg/analyser/icbc"
 	"github.com/deb-sig/double-entry-generator/pkg/analyser/jd"
 	"github.com/deb-sig/double-entry-generator/pkg/analyser/td"
+	"github.com/deb-sig/double-entry-generator/pkg/analyser/trading212"
 
 	"github.com/deb-sig/double-entry-generator/pkg/analyser/alipay"
 	"github.com/deb-sig/double-entry-generator/pkg/analyser/htsec"
@@ -36,6 +37,8 @@ func New(providerName string) (Interface, error) {
 		return htsec.Htsec{}, nil
 	case consts.ProviderIcbc:
 		return icbc.Icbc{}, nil
+	case consts.ProviderTrading212:
+		return trading212.Trading212{}, nil
 	case consts.ProviderTd:
 		return td.Td{}, nil
 	case consts.ProviderBmo:

@@ -32,6 +32,8 @@ const (
 	ProviderHtsec = "htsec"
 	//ProviderIcbc is the name for ICBC provider.
 	ProviderIcbc = "icbc"
+	//ProviderTrading212 is the name for Trading212 provider.
+	ProviderTrading212 = "trading212"
 	//ProviderTd is the name for TD provider.
 	ProviderTd = "td"
 	//ProviderBmo is the name for BMO provider.

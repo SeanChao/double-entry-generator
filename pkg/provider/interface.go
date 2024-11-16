@@ -23,6 +23,7 @@ import (
 	"github.com/deb-sig/double-entry-generator/pkg/provider/icbc"
 	"github.com/deb-sig/double-entry-generator/pkg/provider/jd"
 	"github.com/deb-sig/double-entry-generator/pkg/provider/td"
+	"github.com/deb-sig/double-entry-generator/pkg/provider/trading212"
 
 	"github.com/deb-sig/double-entry-generator/pkg/consts"
 	"github.com/deb-sig/double-entry-generator/pkg/ir"
@@ -50,6 +51,8 @@ func New(name string) (Interface, error) {
 		return htsec.New(), nil
 	case consts.ProviderIcbc:
 		return icbc.New(), nil
+	case consts.ProviderTrading212:
+		return trading212.New(), nil
 	case consts.ProviderTd:
 		return td.New(), nil
 	case consts.ProviderBmo:

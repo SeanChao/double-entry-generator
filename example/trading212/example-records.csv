@@ -1,0 +1,4 @@
+Action,Time,Total,Currency (Total),Notes,ID,Merchant name,Merchant category
+Spending cashback,2024-08-03 01:01:26.827,0.30,"GBP",,ab3e5478-ce47-4615-8350-af11f4674e8e,,
+Interest on cash,2024-08-03 02:13:04.117,0.08,"GBP","Interest on cash",f14b4e1f-1ed0-438d-8702-0b1789586e0e,,
+Card debit,2024-08-03 05:54:33,-19.90,"GBP",,3546f0fd-728a-4628-db6d-b987e5aa4343,"WAITROSE LTD","RETAIL_STORES"

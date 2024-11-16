@@ -1,0 +1,38 @@
+defaultMinusAccount: Assets:Trading212:Invest:Cash
+defaultPlusAccount: Expenses:FIXME
+defaultCurrency: GBP
+title: Test
+trading212:
+  rules:
+    # Broad match should be placed in the front
+    - type: Deposit
+      targetAccount: FIXME
+      methodAccount: Assets:Trading212:Invest:Cash
+        
+    - type: Spending cashback
+      targetAccount: Income:Trading212:Interest
+      methodAccount: Assets:Trading212:Invest:Cash
+        
+    - type: Interest on cash
+      targetAccount: Income:Trading212:Interest
+      methodAccount: Assets:Trading212:Invest:Cash
+
+    - type: Card debit
+      category: RESTAURANTS
+      targetAccount: Expenses:Restaurants
+      methodAccount: Assets:Trading212:Invest:Cash
+
+    - type: Card debit
+      category: RETAIL_STORES
+      targetAccount: Expenses:Groceries
+      methodAccount: Assets:Trading212:Invest:Cash
+        
+    - type: Card debit
+      category: MISCELLANEOUS
+      targetAccount: Expenses:Miscellaneous
+      methodAccount: Assets:Trading212:Invest:Cash
+
+    - type: Card debit
+      category: TRANSPORT
+      targetAccount: Expenses:Transport
+      methodAccount: Assets:Trading212:Invest:Cash
