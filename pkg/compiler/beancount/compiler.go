@@ -58,6 +58,10 @@ func (b *BeanCount) initTemplates() error {
 	if err != nil {
 		return fmt.Errorf("Failed to init the normalOrder template. %v", err)
 	}
+	fxOrderTemplate, err = template.New("fxOrder").Funcs(funcMap).Parse(fxOrder)
+	if err != nil {
+		return fmt.Errorf("Failed to init the fxOrder template. %v", err)
+	}
 	huobiTradeBuyOrderTemplate, err = template.New("tradeBuyOrder").Funcs(funcMap).Parse(huobiTradeBuyOrder)
 	if err != nil {
 		return fmt.Errorf("Failed to init the tradeBuyOrder template. %v", err)
@@ -199,6 +203,24 @@ func (b *BeanCount) writeBill(file io.Writer, index int) error {
 			Currency:          b.Config.DefaultCurrency,
 			Tags:              o.Tags,
 		})
+	case ir.OrderTypeFx:
+		err = fxOrderTemplate.Execute(&buf, &fxOrderVars{
+			PayTime:           o.PayTime,
+				Peer:              o.Peer,
+			Item:              o.Item,
+			Note:              o.Note,
+			Money:             o.Money,
+			Commission:        o.Commission,
+			PlusAccount:       o.PlusAccount,
+			MinusAccount:      o.MinusAccount,
+			PnlAccount:        o.ExtraAccounts[ir.PnlAccount],
+			CommissionAccount: o.ExtraAccounts[ir.CommissionAccount],
+			Metadata:          o.Metadata,
+			PlusCurrency:      o.Units[ir.BaseUnit],
+			MinusCurrency:     o.Units[ir.TargetUnit],
+			CommisionCurrency: o.Units[ir.CommissionUnit],
+			Tags:              o.Tags,
+		}	)
 	case ir.OrderTypeHuobiTrade: // Huobi trades
 		switch o.Type {
 		case ir.TypeSend: // buy

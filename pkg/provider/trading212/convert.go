@@ -1,6 +1,8 @@
 package trading212
 
 import (
+	"fmt"
+
 	"github.com/deb-sig/double-entry-generator/pkg/ir"
 )
 
@@ -10,6 +12,7 @@ func (a *Trading212) convertToIR() *ir.IR {
 	for _, o := range a.Orders {
 
 		irO := ir.Order{
+			OrderType: ir.OrderTypeFx,
 			Peer:         o.Peer,
 			Item:         "",
 			Category:     o.MerchantCategory,
@@ -20,11 +23,16 @@ func (a *Trading212) convertToIR() *ir.IR {
 			Type:         convertType(o.Action),
 			TypeOriginal: o.Action,
 			Note:         o.Notes,
+			Units: map[ir.Unit]string{
+				ir.TargetUnit: o.Currency,
+				ir.BaseUnit:   o.Currency,
+			},
+			Metadata: map[string]string{
+				"id": o.ID,
+			},
 		}
 		if irO.Type == ir.TypeSend {
 			irO.Money = -irO.Money
-		} else if irO.Type == ir.TypeRecv {
-			irO.Money = irO.Money
 		}
 		i.Orders = append(i.Orders, irO)
 	}

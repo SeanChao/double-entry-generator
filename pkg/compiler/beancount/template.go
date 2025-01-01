@@ -32,6 +32,35 @@ type NormalOrderVars struct {
 	Tags              []string
 }
 
+// Template with FX Transactions
+var fxOrder = `{{ .PayTime.Format "2006-01-02" }} * "{{ EscapeString .Peer }}" {{- if .Item }} "{{ EscapeString .Item }}"{{ end }}{{ range .Tags }} #{{ . }}{{ end }}{{ if .Note }} ; {{ .Note }}{{ end }}
+	{{- range $key, $value := .Metadata }}{{ if $value }}{{ printf "\n" }}	{{ $key }}: "{{ $value }}"{{end}}{{end}}
+	{{ .PlusAccount }} {{ .Money | printf "%.2f" }} {{ .PlusCurrency }}
+	{{ .MinusAccount }} -{{ .Money | printf "%.2f" }} {{ .MinusCurrency }}
+	{{- if .CommissionAccount }}{{ printf "\n" }}	{{ .CommissionAccount }} {{ .Commission | printf "%.2f" }} {{ .CommisionCurrency }}{{ end }}
+	{{- if .CommissionAccount }}{{ printf "\n" }}	{{ .MinusAccount }} -{{ .Commission | printf "%.2f" }} {{ .CommisionCurrency }}{{ end }}
+	{{- if .PnlAccount }}{{ printf "\n" }}	{{ .PnlAccount }}{{ end }}
+
+`
+
+type fxOrderVars struct {
+	PayTime           time.Time
+	Peer              string
+	Item              string
+	Note              string
+	Money             float64
+	Commission        float64
+	PlusAccount       string
+	MinusAccount      string
+	PnlAccount        string
+	CommissionAccount string
+	PlusCurrency      string
+	MinusCurrency     string
+	CommisionCurrency string
+	Metadata          map[string]string // unordered metadata map
+	Tags              []string
+}
+
 // 火币买入模版（手续费单位为购买单位货币）
 var huobiTradeBuyOrder = `{{ .PayTime.Format "2006-01-02" }} * "{{ .Peer }}-{{ .TxTypeOriginal }}" "{{ .TypeOriginal }}-{{ .Item }}"
 	{{ .CashAccount }} -{{ .Money | printf "%.8f" }} {{ .BaseUnit }}
@@ -152,6 +181,7 @@ type HtsecTradeSellOrderVars struct {
 
 var (
 	normalOrderTemplate                          *template.Template
+	fxOrderTemplate                              *template.Template
 	huobiTradeBuyOrderTemplate                   *template.Template
 	huobiTradeBuyOrderDiffCommissionUnitTemplate *template.Template
 	huobiTradeSellOrderTemplate                  *template.Template
